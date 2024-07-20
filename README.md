@@ -97,8 +97,9 @@
 
 ## 恒星参数估算与提取 Stellar Parameters Estimation & Extraction
 恒星参数及其运动会影响其光谱的形状和位置.
-当原子和分子吸收特定频率的能量时, 它们会跃迁到新的能级, 在光谱中形成特定波长的吸收线. 这些吸收线的具体位置和强度, 既反映恒星的物理状态 (有效温度 $T_\mathrm{eff}$, 表面重力 $\log{g}$, 微观湍流速度$\xi_t$等), 同时揭示了恒星大气中元素和分子的丰度 ($\mathrm{[M/H]}$, $\mathrm{A(X)}$ 等). 除此之外, 恒星沿视线方向上的运动 (即视向速度$v_r$),自转 (对应投影旋转速度$v\sin{i}$) 等运动会在光谱上产生多普勒效应, 进一步影响谱线的位置和形状. 
-
+当原子和分子吸收特定频率的能量时, 它们会跃迁到新的能级, 在光谱中形成特定波长的吸收线. 
+这些吸收线的具体位置和强度, 既反映恒星的物理状态 (有效温度 $T_\mathrm{eff}$, 表面重力 $\log{g}$, 微观湍流速度 $\xi_t$ 等), 同时揭示了恒星大气中元素和分子的丰度 ($\mathrm{[M/H]}$, $\mathrm{A(X)}$ 等). 
+除此之外, 恒星沿视线方向上的运动 (即视向速度 $v_r$), 自转 (对应投影旋转速度 $v\sin{i}$) 等会在光谱上产生多普勒效应, 进一步影响谱线的位置和形状. 
 在从观测光谱中精确地提取恒星参数和元素丰度之前, 首先需要对这些参数进行初步估算. 恰当的初始参数估计能够缩小参数的搜索范围, 优化计算效率和结果的精确性.
 
 总的来说, 大部分恒星的 $T_\mathrm{eff}$ 和 $\log{g}$ 可以通过Balmer线的等效宽度和形状来确定. 但是, 对于高温恒星, 由于氢原子的电离平衡性不再成立, 因此需要使用其他方法来确定 $T_\mathrm{eff}$ 和 $\log{g}$. 
@@ -122,32 +123,47 @@
 
 - **Line-Depth Ratio (LDR)**
 - **利用电离平衡性确定 $\log{g}$**
-  在冷星中, 相邻两个电离态的⾦属谱线的强度依赖于$1/P_e$.
-  $\log{g}$ 越大, 谱线强度比越小. 
 
 
-### 金属丰度 Metallicity $\mathrm{[M/H]}$
-金属丰度指恒星内除氢和氦外其余化学元素的**所占的比例**, 可以通过 **质量比例** 或者 **化学丰度** 表示.
+### 金属丰度(化学丰度)与元素丰度 Metallicity and Abundance $\mathrm{[M/H]}$ & $\mathrm{A(X)}$
 
-在质量比例标度中, 记H比例为X, He比例为Y, 剩下其他元素(统称为金属)比例为Z, 满足
-$$
+丰度是描述恒星和其他天体中元素组成的重要指标. 
+金属丰度通常表示相对于太阳, 恒星中所有金属元素 (除 $\mathrm{H}$ 和 $\mathrm{He}$ 之外的元素) 的总量.
+元素丰度则具体指某一元素相对于 $\mathrm{H}$ 的丰度.
+
+按照质量比例(各元素按**质量**占的比例)标度, 记 $\mathrm{H}$ 的质量分数为 $X$, $\mathrm{He}$ 的质量分数为 $Y$, 其他元素(即金属)的质量分数为 $Z$, 可得
+
+```math
 X+Y+Z=1
-$$
-根据 [Asplund *et al.* (2009)](https://ui.adsabs.harvard.edu/abs/2009ARA&A..47..481A/abstract), $X_\odot=0.7381, Y_\odot=0.2485, Z_\odot=0.0134$.
+```
+其中, $X_\odot=0.7381, Y_\odot=0.2485, Z_\odot=0.0134$  [(Asplund+2009)](https://ui.adsabs.harvard.edu/abs/2009ARA&A..47..481A/abstract)
 
-化学丰度标度 $\mathrm{[X/H]}$ 表示, 某种元素 $X$ 恒星与太阳中含量的对数形式的数目密度之比.
-其计算公式为
-$$
-\left[\dfrac{X}{H}\right] = \log_{10}\left(\dfrac{N_X}{N_H}\right)_\star - \log_{10}\left(\dfrac{N_X}{N_H}\right)_\odot
-$$
+金属丰度 $\mathrm{[M/H]}$ 反映恒星中所有的金属元素与 $\mathrm{H}$ 的比例相对于太阳的对数差, 通常定义为
 
-:warning: 在生成理论光谱时务必留意使用模型或代码所需“丰度”的定义.
+```math
+\mathrm{[M/H]}=\log_{10}\left(\frac{\sum_{\mathrm{metal}}N_\mathrm{metal}}{N_\mathrm{H}}\right)_\star-\log_{10}\left(\frac{\sum_{\mathrm{metal}}N_\mathrm{metal}}{N_\mathrm{H}}\right)_\odot
+```
+
+由于 $\mathrm{Fe}$ 的谱线在光谱中容易辨识, 同时其也是核聚变能够产生的最重的元素, 因此也有学者使用 *铁氢比* $\mathrm{[Fe/H]}$ 作为金属丰度的指标. 即
+
+```math
+\mathrm{[Fe/H]}=\log_{10}\left(\frac{N_\mathrm{Fe}}{N_\mathrm{H}}\right)_\star-\log_{10}\left(\frac{N_\mathrm{Fe}}{N_\mathrm{H}}\right)_\odot
+```
+
+元素丰度 $\mathrm{A(X)}$ 表示恒星中某种元素 $\mathrm{X}$ 相对于 $\mathrm{H}$ 的原子数密度比的对数值. 定义为
+
+```math
+\mathrm{A(X)}=\log_{10}\left(\frac{N_\mathrm{X}}{N_\mathrm{H}}\right)_\star+12
+```
+
+:warning: 在生成理论光谱时, 务必留意所使用的模型或代码要求输入的“丰度”的定义.
 
 <!-- ### 微观湍流速度 microturbulence $\xi_t$ -->
 
 <!-- ### 宏观湍流速度 macroturbulence -->
 
 <!-- ## 元素丰度分析 Abundance Analysis -->
+
 
 ## [相关文件 Related Documents](slides)
 
