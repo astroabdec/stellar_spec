@@ -32,7 +32,6 @@
     It integrates with various radiative transfer codes and supports the SAMP protocol for interoperability with astronomical software.
     For detailed installation guide, please refer to [the official installation guide](https://www.blancocuaresma.com/s/iSpec/manual/introduction) or [iSpec installation instruction (Chinese ONLY)](https://www.notion.so/iSpec-53cf364299a24bf0801d5bb1489fe919).
 
-
   - SME (Spectroscopy Made Easy) [[Valenti & Piskunov, 1996](https://ui.adsabs.harvard.edu/abs/1996A%26AS..118..595V/abstract) & [Piskunov & Valenti, 2017](https://ui.adsabs.harvard.edu/abs/2017A%26A...597A..16P)] 与 pySME [[Wehrhahn+2023]](https://ui.adsabs.harvard.edu/abs/2023A%26A...671A.171W/abstract)
 
     [SME](https://www.stsci.edu/~valenti/sme.html) 是一款基于IDL的光谱分析软件, 集成于iSpec中. 其具有如下特色:
@@ -52,6 +51,10 @@
     有关pyMOOG的安装和使用, 请参阅[pyMOOG文档](https://pymoog.readthedocs.io/en/latest/).
 
   除此之外, 还有一些其他的辐射转移代码, 此处不再一一详细介绍, 有兴趣的读者可以自行查阅.
+  - [KORG](https://github.com/ajwheeler/Korg.jl)
+    
+    基于Julia实现的辐射转移代码, 支持LTE计算. 可以在[*Python中调用*](https://github.com/ajwheeler/Korg.jl/blob/main/misc/Tutorial%20notebooks/basics/Python%20Basics.ipynb). 同时, KORG支持VALD, Kurucz等线表.
+
   - [SPECTRUM / TURBOSPECTRUM](http://www.appstate.edu/~grayro/spectrum/spectrum.html) 
 
     iSpec内置的辐射转移代码之一, 支持LTE计算.
